@@ -42,14 +42,13 @@ class TextureMapper:
 
     def map(self):
         T = self.__get_T()
+        result = self.__canvas
         for x in range(self.__canvas.shape[1]):
             for y in range(self.__canvas.shape[0]):
                 texture_point = T @ np.array((x, y, 1)).T
                 texture_point = texture_point / texture_point[2]
                 texture_point = texture_point.astype(int)
                 if 0 <= texture_point[0] < self.__texture.shape[1] and 0 <= texture_point[1] < self.__texture.shape[0]:
-                    self.__canvas[y, x] = self.__texture[texture_point[1], texture_point[0]]
+                    result[y, x] = self.__texture[texture_point[1], texture_point[0]]
 
-        cv2.imshow('image', self.__canvas)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        cv2.imwrite('./img/result.jpg', result)
